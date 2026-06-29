@@ -3,198 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>典籍府 - 中华传统文化数字典藏</title>
+<title>典籍府 - 中华传统文化数字典藏平台</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif; background: #faf6f0; color: #3a2a1a; min-height: 100vh; }
-header { background: linear-gradient(135deg, #1a0a00, #3d1f00, #5c2d00); color: #f5e6c8; padding: 40px 20px 30px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-header h1 { font-size: 2.4em; letter-spacing: 0.3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-header p { font-size: 1em; opacity: 0.8; letter-spacing: 0.15em; }
-.stats-bar { display: flex; justify-content: center; gap: 40px; padding: 20px; background: #fff8ee; border-bottom: 1px solid #d4b896; flex-wrap: wrap; }
-.stat { text-align: center; }
-.stat .num { font-size: 1.6em; color: #8b4513; font-weight: bold; }
-.stat .label { font-size: 0.85em; color: #7a5c3a; letter-spacing: 0.1em; }
-.search-section { max-width: 800px; margin: 30px auto; padding: 0 20px; }
-.search-box { display: flex; gap: 10px; flex-wrap: wrap; }
-.search-box input { flex: 1; min-width: 200px; padding: 14px 20px; font-size: 1.1em; border: 2px solid #c9a96e; border-radius: 8px; background: #fffdf8; color: #3a2a1a; font-family: inherit; outline: none; }
-.search-box input:focus { border-color: #8b4513; box-shadow: 0 0 8px rgba(139,69,19,0.2); }
-.search-box select { padding: 14px 16px; font-size: 1em; border: 2px solid #c9a96e; border-radius: 8px; background: #fffdf8; color: #3a2a1a; font-family: inherit; cursor: pointer; outline: none; }
-.search-box button { padding: 14px 30px; font-size: 1.1em; background: linear-gradient(135deg, #8b4513, #a0522d); color: #fff8ee; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; letter-spacing: 0.15em; transition: all 0.3s; }
-.search-box button:hover { background: linear-gradient(135deg, #a0522d, #c07840); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139,69,19,0.3); }
-.results-info { max-width: 800px; margin: 10px auto 0; padding: 0 20px; font-size: 0.9em; color: #7a5c3a; text-align: center; }
-.poem-list { max-width: 800px; margin: 20px auto; padding: 0 20px 40px; }
-.poem-item { background: #fffdf8; border: 1px solid #e8d5b5; border-radius: 10px; padding: 22px 28px; margin-bottom: 18px; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-.poem-item:hover { border-color: #c9a96e; box-shadow: 0 4px 16px rgba(139,69,19,0.12); transform: translateY(-2px); }
-.poem-title { font-size: 1.25em; color: #5c2d00; margin-bottom: 8px; letter-spacing: 0.08em; }
-.poem-meta { font-size: 0.88em; color: #9a7a5a; margin-bottom: 12px; }
-.poem-meta span { margin-right: 18px; }
-.poem-orig { font-size: 1.05em; color: #2a1a0a; line-height: 1.9; letter-spacing: 0.05em; white-space: pre-line; border-left: 3px solid #c9a96e; padding-left: 14px; }
-.loading { text-align: center; padding: 40px; color: #9a7a5a; font-size: 1em; letter-spacing: 0.1em; }
-.empty { text-align: center; padding: 60px 20px; color: #9a7a5a; font-size: 1.1em; }
-.empty-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.5; }
-.tabs { max-width: 800px; margin: 0 auto; padding: 20px 20px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-.tab { padding: 10px 22px; border: 1px solid #c9a96e; border-radius: 20px; cursor: pointer; font-size: 0.92em; color: #7a5c3a; background: #fffdf8; transition: all 0.2s; font-family: inherit; }
-.tab.active, .tab:hover { background: #8b4513; color: #fff8ee; border-color: #8b4513; }
-.detail-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-.detail-overlay.show { display: flex; }
-.detail-modal { background: #fffdf8; border-radius: 14px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 36px 40px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.detail-modal .close-btn { position: absolute; top: 16px; right: 20px; font-size: 1.6em; cursor: pointer; color: #9a7a5a; background: none; border: none; }
-.detail-title { font-size: 1.8em; color: #3a1a00; margin-bottom: 10px; letter-spacing: 0.1em; }
-.detail-author { color: #8b4513; margin-bottom: 20px; font-size: 0.95em; }
-.detail-section-title { font-size: 0.9em; color: #8b4513; font-weight: bold; letter-spacing: 0.12em; margin: 18px 0 8px; border-bottom: 1px solid #e8d5b5; padding-bottom: 6px; }
-.detail-orig { font-size: 1.15em; color: #2a1a0a; line-height: 2.1; letter-spacing: 0.06em; white-space: pre-line; background: #faf3e3; padding: 18px 22px; border-radius: 8px; border-left: 4px solid #8b4513; margin: 14px 0; }
-.detail-translate { font-size: 1em; color: #5a4a3a; line-height: 1.9; font-style: italic; }
-.detail-notes { font-size: 0.92em; color: #6a5a4a; line-height: 1.8; }
-.st-type-tag { display: inline-block; padding: 3px 10px; background: #f0e0c8; color: #7a5c3a; border-radius: 12px; font-size: 0.8em; margin-right: 8px; }
-footer { text-align: center; padding: 30px; color: #9a7a5a; font-size: 0.85em; border-top: 1px solid #e8d5b5; margin-top: 40px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"Noto Serif SC","Source Han Serif SC","SimSun",serif; background:#faf6f0; color:#3a2a1a; min-height:100vh; }
+header { background:linear-gradient(135deg,#1a0a00,#3d1f00,#5c2d00); color:#f5e6c8; padding:40px 20px 30px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,.4); position:relative; }
+header .badge { position:absolute; top:20px; right:20px; background:rgba(245,230,200,.15); border:1px solid rgba(245,230,200,.3); border-radius:20px; padding:6px 16px; font-size:.75em; letter-spacing:.1em; }
+header h1 { font-size:2.6em; letter-spacing:.3em; margin-bottom:10px; text-shadow:2px 2px 4px rgba(0,0,0,.5); }
+header p { font-size:1em; opacity:.8; letter-spacing:.15em; }
+nav { background:#2c1500; display:flex; justify-content:center; gap:0; flex-wrap:wrap; }
+nav a { color:#f5e6c8; text-decoration:none; padding:14px 28px; letter-spacing:.15em; font-size:.95em; transition:background .3s; border-bottom:3px solid transparent; }
+nav a:hover { background:rgba(245,230,200,.1); border-bottom-color:#c9a96e; }
+.hero { background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%231a0a00" opacity="0.3"/><text x="600" y="200" text-anchor="middle" font-size="120" fill="%23c9a96e" opacity="0.08">典</text></svg>') center/cover; padding:80px 20px; text-align:center; }
+.hero h2 { font-size:1.8em; letter-spacing:.2em; margin-bottom:20px; color:#3a2a1a; }
+.hero p { max-width:700px; margin:0 auto 30px; line-height:2; color:#5a3a2a; font-size:1.05em; }
+.hero-btns { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; }
+.btn-primary { background:linear-gradient(135deg,#8b4513,#a0522d); color:#fff8ee; padding:14px 36px; border-radius:8px; text-decoration:none; letter-spacing:.15em; font-size:1em; transition:all .3s; }
+.btn-primary:hover { background:linear-gradient(135deg,#a0522d,#c07840); transform:translateY(-2px); box-shadow:0 6px 16px rgba(139,69,19,.3); }
+.btn-secondary { background:transparent; color:#8b4513; padding:14px 36px; border-radius:8px; text-decoration:none; letter-spacing:.15em; font-size:1em; border:2px solid #8b4513; transition:all .3s; }
+.btn-secondary:hover { background:#8b4513; color:#fff8ee; }
+.section { max-width:1100px; margin:0 auto; padding:60px 20px; }
+.section-title { text-align:center; font-size:1.6em; letter-spacing:.2em; margin-bottom:40px; color:#3a2a1a; position:relative; }
+.section-title::after { content:''; display:block; width:60px; height:3px; background:#c9a96e; margin:15px auto 0; }
+.grid-3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; }
+.card { background:#fff; border:1px solid #e8d8c0; border-radius:12px; padding:30px; box-shadow:0 2px 12px rgba(0,0,0,.06); transition:transform .3s,box-shadow .3s; }
+.card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.1); }
+.card h3 { font-size:1.2em; color:#8b4513; margin-bottom:12px; letter-spacing:.1em; }
+.card p { line-height:1.9; color:#5a3a2a; font-size:.95em; }
+.card .icon { font-size:2.5em; margin-bottom:15px; display:block; }
+.grid-4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+.stat-card { background:linear-gradient(135deg,#3d1f00,#5c2d00); color:#f5e6c8; border-radius:12px; padding:30px; text-align:center; }
+.stat-card .num { font-size:2.2em; font-weight:bold; color:#f5e6c8; }
+.stat-card .label { font-size:.9em; letter-spacing:.1em; opacity:.8; margin-top:5px; }
+.news-item { background:#fff; border-left:4px solid #c9a96e; padding:20px 24px; margin-bottom:16px; border-radius:0 8px 8px 0; box-shadow:0 1px 6px rgba(0,0,0,.05); }
+.news-item .date { font-size:.8em; color:#8b4513; margin-bottom:6px; letter-spacing:.05em; }
+.news-item h4 { font-size:1.05em; color:#3a2a1a; margin-bottom:6px; }
+.news-item p { font-size:.9em; color:#7a5c3a; line-height:1.7; }
+footer { background:#1a0a00; color:#c9a96e; text-align:center; padding:30px 20px; line-height:2; font-size:.9em; }
+footer a { color:#f5e6c8; text-decoration:none; }
+footer a:hover { text-decoration:underline; }
+.banner { background:linear-gradient(135deg,#fff8ee,#f5e6c8); border-top:1px solid #d4b896; border-bottom:1px solid #d4b896; padding:20px; text-align:center; }
+.banner a { color:#8b4513; text-decoration:none; font-size:.9em; }
+@media(max-width:768px){header h1{font-size:1.8em;}.section{padding:40px 16px;}.grid-3{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>典籍府</h1>
-  <p>中华传统文化数字典藏</p>
+<div class="badge">中枢院 · 业务部门</div>
+<h1>典籍府</h1>
+<p>中华传统文化数字典藏平台</p>
 </header>
 
-<div class="stats-bar" id="statsBar">
-  <div class="stat"><div class="num" id="statTotal">--</div><div class="label">典籍总计</div></div>
-  <div class="stat"><div class="num" id="statTang">--</div><div class="label">唐诗</div></div>
-  <div class="stat"><div class="num" id="statSong">--</div><div class="label">宋词</div></div>
-  <div class="stat"><div class="num" id="statTerms">--</div><div class="label">节气</div></div>
-  <div class="stat"><div class="num" id="statFest">--</div><div class="label">节日</div></div>
+<nav>
+<a href="index.html">首页</a>
+<a href="about.html">部门概况</a>
+<a href="classics.html">典籍宝库</a>
+<a href="products.html">成果与产品</a>
+<a href="news.html">新闻动态</a>
+<a href="contact.html">联系我们</a>
+</nav>
+
+<div class="hero">
+<h2>典籍载道 · 文脉传承</h2>
+<p>典籍府是中枢院旗下专注于中华传统文化数字典藏与文化服务的业务部门，<br>致力于将千年文脉转化为当代可阅读、可检索、可传播的数字资产，<br>并通过非遗申报、文创开发、文化服务等方式实现价值变现。</p>
+<div class="hero-btns">
+<a href="classics.html" class="btn-primary">进入典籍宝库</a>
+<a href="about.html" class="btn-secondary">了解典籍府</a>
+</div>
 </div>
 
-<div class="search-section">
-  <div class="tabs">
-    <button class="tab active" data-genre="" onclick="setGenre('')">全部</button>
-    <button class="tab" data-genre="唐诗" onclick="setGenre('唐诗')">唐诗</button>
-    <button class="tab" data-genre="宋词" onclick="setGenre('宋词')">宋词</button>
-    <button class="tab" data-genre="四书五经" onclick="setGenre('四书五经')">四书五经</button>
-  </div>
-  <div class="search-box" style="margin-top:14px;">
-    <input type="text" id="keywordInput" placeholder="搜索诗词、作者、朝代..." onkeydown="if(event.key==='Enter')doSearch()">
-    <select id="dynastySelect">
-      <option value="">全部朝代</option>
-      <option value="唐代">唐代</option>
-      <option value="宋代">宋代</option>
-      <option value="五代">五代</option>
-    </select>
-    <button onclick="doSearch()">检索</button>
-  </div>
+<div class="section">
+<div class="section-title">核心业务</div>
+<div class="grid-3">
+<div class="card">
+<span class="icon">📚</span>
+<h3>典籍数字化</h3>
+<p>整理、录入、校勘中华传统典籍，构建可检索、可阅读的数字知识库，涵盖诗词歌赋、经史子集、天文历法、传统礼仪等类别。</p>
+</div>
+<div class="card">
+<span class="icon">🏛️</span>
+<h3>非遗申报与保护</h3>
+<p>挖掘整理地方非遗资源，协助申报各级非物质文化遗产名录，开展非遗传承人培训与数字化记录存档工作。</p>
+</div>
+<div class="card">
+<span class="icon">🎁</span>
+<h3>文化创意开发</h3>
+<p>将典籍文化元素融入文创产品设计，开发数字藏品、IP衍生品、文化教育课程等变现产品，探索传统文化市场化路径。</p>
+</div>
+</div>
 </div>
 
-<div class="results-info" id="resultsInfo"></div>
-<div class="poem-list" id="poemList">
-  <div class="empty">
-    <div class="empty-icon">☯</div>
-    <div>输入关键词，即可检索典籍</div>
-  </div>
+<div class="section" style="background:#fff8ee;max-width:100%;padding:60px 20px;">
+<div style="max-width:1100px;margin:0 auto;">
+<div class="section-title">数据概览</div>
+<div class="grid-4">
+<div class="stat-card"><div class="num">1636+</div><div class="label">收录典籍</div></div>
+<div class="stat-card"><div class="num">8</div><div class="label">内设部门</div></div>
+<div class="stat-card"><div class="num">5万+</div><div class="label">月度创收目标（元）</div></div>
+<div class="stat-card"><div class="num">正三品</div><div class="label">部门品级</div></div>
+</div>
+</div>
 </div>
 
-<footer>典籍府 &copy; 2026 | 中华传统文化数字典藏平台 | <a href="support.html" style="color:#c9a96e;text-decoration:none;">支持我们</a></footer>
+<div class="section">
+<div class="section-title">最新动态</div>
+<div class="grid-3">
+<div class="news-item">
+<div class="date">2026-06-29</div>
+<h4>典籍府官网全新上线</h4>
+<p>典籍府公网正式升级为部门官网，实现典籍检索与非遗服务双入口运营。</p>
+</div>
+<div class="news-item">
+<div class="date">2026-06-13</div>
+<h4>会员推广包正式推出</h4>
+<p>典籍府会员推广包全面升级，包含专属权益与文化增值服务。</p>
+</div>
+<div class="news-item">
+<div class="date">2026-06-01</div>
+<h4>典籍府正式挂牌</h4>
+<p>在第6次内阁常务会议上，典籍府正式宣告成立并挂牌运营。</p>
+</div>
+</div>
+</div>
 
-<script src="data.js"></script>
-<script>
-let currentGenre = '';
-let currentPage = 1;
+<div class="banner">
+<a href="contact.html">联系我们 · 合作洽谈 →</a>
+</div>
 
-function loadStats() {
-  document.getElementById('statTotal').textContent = STATS_DATA.total;
-  document.getElementById('statTang').textContent = STATS_DATA.tang_poems;
-  document.getElementById('statSong').textContent = STATS_DATA.song_lyrics;
-  document.getElementById('statTerms').textContent = STATS_DATA.solar_terms || 24;
-  document.getElementById('statFest').textContent = STATS_DATA.festivals || 10;
-}
+<footer>
+<p><strong>典籍府</strong> · 中枢院旗下业务部门 · 中华传统文化数字典藏平台</p>
+<p>联系邮箱：dianjifu@zhongshuyuan.cn &nbsp;|&nbsp; <a href="classics.html">典籍宝库</a> &nbsp;|&nbsp; <a href="about.html">部门概况</a> &nbsp;|&nbsp; <a href="contact.html">联系我们</a></p>
+<p style="margin-top:10px;opacity:.6;">© 2026 典籍府 | 中枢院 版权所有</p>
+</footer>
 
-function setGenre(genre) {
-  currentGenre = genre;
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.genre === genre);
-  });
-  currentPage = 1;
-  doSearch();
-}
-
-function doSearch(page = 1) {
-  currentPage = page;
-  const kw = document.getElementById('keywordInput').value.trim().toLowerCase();
-  const dyn = document.getElementById('dynastySelect').value;
-  const genre = currentGenre;
-
-  let filtered = CLASSICS_DATA.filter(item => {
-    if (genre && item.genre !== genre) return false;
-    if (dyn && item.dynasty !== dyn) return false;
-    if (kw) {
-      const searchIn = (item.title + item.author + item.original_text + (item.dynasty||'')).toLowerCase();
-      if (!searchIn.includes(kw)) return false;
-    }
-    return true;
-  });
-
-  const total = filtered.length;
-  const size = 20;
-  const totalPages = Math.ceil(total / size);
-  const start = (page - 1) * size;
-  const pageData = filtered.slice(start, start + size);
-
-  const list = document.getElementById('poemList');
-
-  if (pageData.length === 0) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">☯</div><div>未找到相关典籍</div></div>';
-    document.getElementById('resultsInfo').textContent = '';
-    return;
-  }
-
-  document.getElementById('resultsInfo').textContent = `共找到 ${total} 篇，第 ${page} / ${totalPages || 1} 页`;
-
-  list.innerHTML = pageData.map(item => `
-    <div class="poem-item" onclick="showDetail(${item.id})">
-      <div class="poem-title">${esc(item.title)}</div>
-      <div class="poem-meta">
-        <span>${esc(item.author || '佚名')}</span>
-        <span>${esc(item.dynasty || '')}</span>
-        <span class="st-type-tag">${esc(item.genre || '')}</span>
-      </div>
-      <div class="poem-orig">${esc(item.original_text || '').substring(0, 80)}${(item.original_text||'').length > 80 ? '…' : ''}</div>
-    </div>
-  `).join('');
-
-  if (totalPages > 1) {
-    list.innerHTML += `<div style="text-align:center;padding:20px;color:#7a5c3a;">
-      ${page > 1 ? `<button onclick="doSearch(${page-1})" style="padding:8px 20px;margin-right:10px;cursor:pointer;border:1px solid #c9a96e;background:#fffdf8;color:#7a5c3a;border-radius:6px;">上一页</button>` : ''}
-      第 ${page} / ${totalPages} 页
-      ${page < totalPages ? `<button onclick="doSearch(${page+1})" style="padding:8px 20px;margin-left:10px;cursor:pointer;border:1px solid #c9a96e;background:#fffdf8;color:#7a5c3a;border-radius:6px;">下一页</button>` : ''}
-    </div>`;
-  }
-}
-
-function showDetail(id) {
-  const d = CLASSICS_DATA.find(item => item.id === id);
-  if (!d) return;
-
-  const div = document.createElement('div');
-  div.className = 'detail-overlay show';
-  div.onclick = e => { if (e.target === div) div.remove(); };
-  div.innerHTML = `
-    <div class="detail-modal">
-      <button class="close-btn" onclick="this.closest('.detail-overlay').remove()">✕</button>
-      <div class="detail-title">${esc(d.title)}</div>
-      <div class="detail-author">${esc(d.author||'佚名')} · ${esc(d.dynasty||'')} · ${esc(d.genre||'')}</div>
-      <div class="detail-section-title">原文</div>
-      <div class="detail-orig">${esc(d.original_text||'暂无')}</div>
-      ${d.translated_text ? `<div class="detail-section-title">译文</div><div class="detail-translate">${esc(d.translated_text)}</div>` : ''}
-      ${d.notes ? `<div class="detail-section-title">注释</div><div class="detail-notes">${esc(d.notes)}</div>` : ''}
-    </div>
-  `;
-  document.body.appendChild(div);
-}
-
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>');
-}
-
-loadStats();
-</script>
 </body>
 </html>
